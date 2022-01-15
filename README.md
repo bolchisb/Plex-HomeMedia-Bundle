@@ -20,7 +20,7 @@ Next update will bring a middleware service which will provide authentication to
 Inside this repo you'll find a file names `env.mk`. Please edit this file with your volumes path. I recommend using `/appdata` if you have the hdd/ssd installed on your computer and `/sharedata` if you have attached a NFS share to your server. Also please update your user GID and UID.
 Set your timezone by updateing `TIMEZONE` environment variable.
 # Prepare server.
-On your Ubuntu server you need to make sure you have already installed the following packages unsing aptitude. Run each line on your server using sudo command.
+On your Ubuntu server you need to make sure you have already installed the following packages using aptitude.
 
 ```bash
 sudo apt install -y wget make curl
@@ -41,6 +41,7 @@ sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 ```
+**_NOTE:_** Here is a tricky part, because of this command `sudo usermod -aG docker $USER` you need to logout once from you server before you move forward.  
 
 After you installed docker you get the chance to populate `/etc/hosts` with the services local domain name. This name can be used in your local browser to access the web interface of all service. This step should be used only if you have a GUI installed on your server, otherwise it has no use. Please use `sudo` command when running this `make` target.
 ```bash
