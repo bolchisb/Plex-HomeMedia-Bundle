@@ -1,0 +1,47 @@
+IP_ADDRESS_LOCAL_MACHINE=10.13.21.123
+export IP_ADDRESS_LOCAL_MACHINE
+
+TIMEZONE=Europe/Bucharest
+export TIMEZONE
+
+PUID=1000
+export PUID
+
+PGID=1000
+export PGID
+
+INTERNAL_NETWORK_NAME=backend-network
+export INTERNAL_NETWORK_NAME
+
+OVERSEER_VOLUME=/appdata/overseerr
+export OVERSEER_VOLUME
+
+TAUTULLI_VOLUME=/appdata/tautulli
+export TAUTULLI_VOLUME
+
+SONARR_VOLUME=/appdata/sonarr
+export SONARR_VOLUME
+
+RADARR_VOLUME=/appdata/radarr
+export RADARR_VOLUME
+
+TRANSMISSION_VOLUME=/appdata/transmission
+export TRANSMISSION_VOLUME
+
+JACKET_VOLUME=/appdata/jacket
+export JACKET_VOLUME
+
+PROWLARR_VOLUME=/appdata/prowlarr
+export PROWLARR_VOLUME
+
+PLEX_TVSHOWS_VOLUME=/appdata/tvshows
+export PLEX_TVSHOWS_VOLUME
+
+PLEX_MOVIES_VOLUME=/appdata/movies
+export PLEX_MOVIES_VOLUME
+
+DOWNLOADS=/appdata/downloads
+export DOWNLOADS
+
+TRAEFIK_VOLUME=/appdata/traefik
+export TRAEFIK_VOLUME

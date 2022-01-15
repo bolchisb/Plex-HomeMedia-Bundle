@@ -1,0 +1,229 @@
+version: '3.3'
+
+services:
+  transmission:
+    cpus: 0.7
+    mem_limit: 512m
+    oom_kill_disable: false
+    image: linuxserver/transmission:latest
+    container_name: transmission_home_server
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - transmission-data:/config
+      - downloads:/downloads
+    ports:
+      - 9091
+      - 40413:40413/udp
+    restart: always
+    networks:
+      - backend-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.transmission.rule=Host(`transmission.localhost`)"
+      - "traefik.http.routers.transmission.service=transmission@docker"
+      - "traefik.http.routers.transmission.tls=false"
+      - "traefik.http.routers.transmission.entrypoints=web-secure,web"
+      - "traefik.http.services.transmission.loadbalancer.server.port=9091"
+      - "traefik.docker.network=backend-network"
+
+  radarr:
+    cpus: 0.3
+    mem_limit: 512m
+    oom_kill_disable: false
+    image: linuxserver/radarr:latest
+    hostname: radarr
+    container_name: radarr_home_server
+    volumes:
+      - radarr-data:/config
+      - downloads:/downloads
+      - plex-movies:/movies
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 7878
+    restart: always
+    networks:
+      - backend-network
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.radarr.rule=Host(`radarr.localhost`)"
+      - "traefik.http.routers.radarr.service=radarr@docker"
+      - "traefik.http.routers.radarr.tls=false"
+      - "traefik.http.routers.radarr.entrypoints=web-secure,web"
+      - "traefik.http.services.radarr.loadbalancer.server.port=7878"
+      - "traefik.docker.network=backend-network"
+
+  sonarr:
+    cpus: 0.3
+    mem_limit: 512m
+    oom_kill_disable: false
+    image: linuxserver/sonarr:latest
+    hostname: sonarr
+    container_name: sonarr_home_server
+    volumes:
+      - sonarr-data:/config
+      - downloads:/downloads
+      - plex-tvshows:/tv
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 8989
+    restart: always
+    networks:
+      - backend-network
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.sonarr.rule=Host(`sonarr.localhost`)"
+      - "traefik.http.routers.sonarr.service=sonarr@docker"
+      - "traefik.http.routers.sonarr.tls=false"
+      - "traefik.http.routers.sonarr.entrypoints=web-secure,web"
+      - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
+      - "traefik.docker.network=backend-network"
+
+  jackett:
+    cpus: 0.2
+    mem_limit: 128m
+    oom_kill_disable: false
+    image: linuxserver/jackett:latest
+    container_name: jackett_home_server
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - jackett-data:/config
+      - downloads:/downloads
+    ports:
+      - 9117
+    networks:
+      - backend-network
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jackett.rule=Host(`jackett.localhost`)"
+      - "traefik.http.routers.jackett.service=jackett@docker"
+      - "traefik.http.routers.jackett.tls=false"
+      - "traefik.http.routers.jackett.entrypoints=web-secure,web"
+      - "traefik.http.services.jackett.loadbalancer.server.port=9117"
+      - "traefik.docker.network=backend-network"
+
+  tautulli:
+    cpus: 0.3
+    mem_limit: 200m
+    oom_kill_disable: false
+    container_name: tautulli_home_server
+    hostname: tautulli
+    restart: always
+    image: linuxserver/tautulli:latest
+    volumes:
+      - tautulli-data:/config
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 8181
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+    networks:
+      - backend-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tautulli.rule=Host(`tautulli.localhost`)"
+      - "traefik.http.routers.tautulli.service=tautulli@docker"
+      - "traefik.http.routers.tautulli.tls=false"
+      - "traefik.http.routers.tautulli.entrypoints=web-secure,web"
+      - "traefik.http.services.tautulli.loadbalancer.server.port=8181"
+      - "traefik.docker.network=backend-network"
+
+  prowlarr:
+    cpus: 0.3
+    mem_limit: 200m
+    oom_kill_disable: false
+    container_name: prowlarr_home_server
+    hostname: prowlarr
+    restart: always
+    image: ghcr.io/linuxserver/prowlarr:develop
+    volumes:
+      - prowlarr-data:/config
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 9696
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+    networks:
+      - backend-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.localhost`)"
+      - "traefik.http.routers.prowlarr.service=prowlarr@docker"
+      - "traefik.http.routers.prowlarr.tls=false"
+      - "traefik.http.routers.prowlarr.entrypoints=web-secure,web"
+      - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
+      - "traefik.docker.network=backend-network"
+
+  overseerr:
+    cpus: 0.5
+    mem_limit: 512m
+    oom_kill_disable: false
+    image: ghcr.io/linuxserver/overseerr:latest
+    container_name: overseerr_home_server
+    hostname: overseerr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - overseerr-data:/config
+    ports:
+      - 5055
+    restart: unless-stopped
+    networks:
+      - backend-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.overseerr.rule=Host(`overseerr.localhost`)"
+      - "traefik.http.routers.overseerr.service=overseerr@docker"
+      - "traefik.http.routers.overseerr.tls=false"
+      - "traefik.http.routers.overseerr.entrypoints=web-secure,web"
+      - "traefik.http.services.overseerr.loadbalancer.server.port=5055"
+      - "traefik.docker.network=backend-network"
+
+volumes:
+  overseerr-data:
+    external: true
+  prowlarr-data:
+    external: true
+  tautulli-data:
+    external: true
+  jackett-data:
+    external: true
+  sonarr-data:
+    external: true
+  radarr-data:
+    external: true
+  transmission-data:
+    external: true
+  downloads:
+    external: true
+  plex-tvshows:
+    external: true
+  plex-movies:
+    external: true
+
+networks:
+  backend-network:
+    external:
+      name: backend-network
+
