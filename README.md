@@ -42,7 +42,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 ```
 
-After you installed docker you get the chance to populate `/etc/hosts` with the services local domain name. This name can be used in your local browser to access the web interface of all service. This step should be used only if you have a GUI installed on your server, otherwise it has no use. Please use `sudo` command when running this `make` target.
+After you installed docker you get the chance to populate `/etc/hosts` with the services local domain name. These names can be used in your local browser to access the web interface of all service. The step should be used only if you have a GUI installed on your server, otherwise it has no use. Please use `sudo` command when running this `make` target.
 ```bash
 sudo make prepare-hosts
 ```
