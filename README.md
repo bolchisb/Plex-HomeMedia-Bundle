@@ -58,6 +58,14 @@ sudo dpkg -i plexmediaserver_1.25.2.5319-c43dc0277_amd64.deb
 
 After you installed Plex you should configure it.
 
+## Authelia config.
+
+### Generating user password.
+Run this command to generate a password for your user then replace it in the `users_database.yml`.
+```bash
+docker run authelia/authelia:latest authelia hash-password 'yourpassword'
+```
+
 
 # How to use the package.
 This integration is making use of `make`. I have set up some targets to ease your job. I will describe each make target.

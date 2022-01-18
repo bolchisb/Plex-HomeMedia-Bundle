@@ -23,7 +23,7 @@ services:
       - backend-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.transmission.rule=Host(`transmission.localhost`)"
+      - "traefik.http.routers.transmission.rule=Host(`transmission.${DOMAIN_NAME}`)"
       - "traefik.http.routers.transmission.service=transmission@docker"
       - "traefik.http.routers.transmission.tls=false"
       - "traefik.http.routers.transmission.entrypoints=web-secure,web"
@@ -53,7 +53,7 @@ services:
       - TZ=${TIMEZONE}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.radarr.rule=Host(`radarr.localhost`)"
+      - "traefik.http.routers.radarr.rule=Host(`radarr.${DOMAIN_NAME}`)"
       - "traefik.http.routers.radarr.service=radarr@docker"
       - "traefik.http.routers.radarr.tls=false"
       - "traefik.http.routers.radarr.entrypoints=web-secure,web"
@@ -83,7 +83,7 @@ services:
       - TZ=${TIMEZONE}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.sonarr.rule=Host(`sonarr.localhost`)"
+      - "traefik.http.routers.sonarr.rule=Host(`sonarr.${DOMAIN_NAME}`)"
       - "traefik.http.routers.sonarr.service=sonarr@docker"
       - "traefik.http.routers.sonarr.tls=false"
       - "traefik.http.routers.sonarr.entrypoints=web-secure,web"
@@ -110,7 +110,7 @@ services:
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.jackett.rule=Host(`jackett.localhost`)"
+      - "traefik.http.routers.jackett.rule=Host(`jackett.${DOMAIN_NAME}`)"
       - "traefik.http.routers.jackett.service=jackett@docker"
       - "traefik.http.routers.jackett.tls=false"
       - "traefik.http.routers.jackett.entrypoints=web-secure,web"
@@ -138,7 +138,7 @@ services:
       - backend-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.tautulli.rule=Host(`tautulli.localhost`)"
+      - "traefik.http.routers.tautulli.rule=Host(`tautulli.${DOMAIN_NAME}`)"
       - "traefik.http.routers.tautulli.service=tautulli@docker"
       - "traefik.http.routers.tautulli.tls=false"
       - "traefik.http.routers.tautulli.entrypoints=web-secure,web"
@@ -166,7 +166,7 @@ services:
       - backend-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.localhost`)"
+      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.${DOMAIN_NAME}`)"
       - "traefik.http.routers.prowlarr.service=prowlarr@docker"
       - "traefik.http.routers.prowlarr.tls=false"
       - "traefik.http.routers.prowlarr.entrypoints=web-secure,web"
@@ -193,7 +193,7 @@ services:
       - backend-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.overseerr.rule=Host(`overseerr.localhost`)"
+      - "traefik.http.routers.overseerr.rule=Host(`overseerr.${DOMAIN_NAME}`)"
       - "traefik.http.routers.overseerr.service=overseerr@docker"
       - "traefik.http.routers.overseerr.tls=false"
       - "traefik.http.routers.overseerr.entrypoints=web-secure,web"

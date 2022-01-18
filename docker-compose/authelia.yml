@@ -1,0 +1,91 @@
+version: '3.3'
+
+services:
+  authelia:
+    cpus: 0.8
+    mem_limit: 2500m
+    oom_kill_disable: false
+    container_name: auth
+    hostname: authelia
+    image: authelia/authelia:latest
+    restart: always
+    networks:
+      - backend-network
+    ports:
+      - 9091
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ./../config/authelia/config.yml:/config/configuration.yml
+      - ./../config/authelia/users_database.yml:/config/users_database.yml
+      - ./../config/authelia/notification.txt:/config/notification.txt
+      - ./../certs:/certs
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.authelia.rule=Host(`auth.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.authelia.tls"
+      - "traefik.http.routers.authelia.tls.certresolver=letsEncrypt"
+      - "traefik.http.routers.authelia.entrypoints=web-secure,web"
+      - "traefik.http.routers.authelia.entryPoints.to=web-secure"
+      - "traefik.http.routers.authelia.entryPoints.scheme=https"
+      - "traefik.http.services.authelia.loadbalancer.server.port=9091"
+      - "traefik.docker.network=backend-network"
+      - 'traefik.http.middlewares.authelia-fwd.forwardauth.address=http://authelia:9091/api/verify?rd=https://auth.${DOMAIN_NAME}/'
+      - 'traefik.http.middlewares.authelia-fwd.forwardauth.trustForwardHeader=true'
+      - 'traefik.http.middlewares.authelia-fwd.forwardauth.authResponseHeaders=Remote-User, Remote-Groups, Remote-Name, Remote-Email'
+      - "traefik.http.middlewares.authelia-fwd.forwardauth.tls.insecureSkipVerify=true"
+      - "traefik.http.middlewares.authelia-fwd.forwardauth.tls=false"
+
+  redis:
+    cpus: 0.4
+    mem_limit: 512m
+    oom_kill_disable: false
+    image: redis:alpine
+    hostname: redis
+    container_name: redis_authelia
+    restart: always
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+      - REDIS_DATABASES=1
+      - REDIS_MODE=master
+      - REDIS_PORT=6379
+    networks:
+      - backend-network
+    ports:
+      - 6379
+    labels:
+      - "traefik.enable=false"
+  
+  postgres:
+    image: postgres:9.6.18
+    container_name: postgres_authelia
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+      - UMASK_SET=022
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - psql-data:/var/lib/postgresql/data
+    ports:
+      - 5432
+    networks:
+      - backend-network
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=false"
+
+volumes:
+  psql-data:
+    external: true
+
+networks:
+  backend-network:
+    external:
+      name: backend-network

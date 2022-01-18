@@ -1,0 +1,24 @@
+users:
+  admin:
+    password: $argon2id$v=19$m=65536,t=1,p=8$UnVoUCsycldvdWxkWlU3WQ$8uYEJAk0VFseBJDKfr5yaQ5BS/ha39ChCI/cpJQROZE
+    displayname: User Admin
+    email: user_admin@mail.com
+    groups:
+    - admins
+    - dev
+    - streamer
+
+  user_one:
+    password: $argon2id$v=19$m=65536,t=1,p=8$UnVoUCsycldvdWxkWlU3WQ$8uYEJAk0VFseBJDKfr5yaQ5BS/ha39ChCI/cpJQROZE
+    displayname: User One
+    email: user2@mail.com
+    groups:
+    - dev
+    - streamer
+
+  user_two:
+    password: $argon2id$v=19$m=65536,t=1,p=8$UnVoUCsycldvdWxkWlU3WQ$8uYEJAk0VFseBJDKfr5yaQ5BS/ha39ChCI/cpJQROZE
+    displayname: User Three
+    email: user3@mail.com
+    groups:
+    - streamer
